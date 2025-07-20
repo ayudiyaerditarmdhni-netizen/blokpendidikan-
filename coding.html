@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog - Pendidikan</title>
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    color: #2c3e50;
+    scroll-behavior: smooth;
+    line-height: 1.6;
+  }
+  a {
+    text-decoration: none;
+    color: #34495e;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  a:hover, a:focus {
+    color: #2980b9;
+    outline: none;
+  }
+  h1,h2,h3 {
+    font-weight: 700;
+    color: #2c3e50;
+  }
+  h1 {
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+  }
+  h2 {
+    font-size: 2rem;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.3rem;
+    margin-bottom: 2rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+    margin-top: 0;
+  }
+  p {
+    text-align: justify;
+  }
+
+  /* Header */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #ecf0f1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    z-index: 999;
+  }
+  nav {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #2980b9;
+    user-select: none;
+  }
+  ul.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2.2rem;
+  }
+  ul.nav-links li {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  ul.nav-links a {
+    padding: 6px 10px;
+    border-radius: 6px;
+    user-select: none;
+  }
+  ul.nav-links a.active,
+  ul.nav-links a:hover,
+  ul.nav-links a:focus {
+    background-color: #2980b9;
+    color: #fff;
+  }
+
+  /* Main Container */
+  main.container {
+    max-width: 1140px;
+    padding: 100px 2rem 4rem;
+    margin: 0 auto;
+    min-height: 80vh;
+  }
+
+  /* Sections hidden by default except active */
+  section.content-section {
+    display: none;
+  }
+  section.content-section.active {
+    display: block;
+  }
+
+  /* Artikel Section */
+  #artikel .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+    gap: 2.4rem;
+  }
+  .card {
+    background: #ffffff;
+    box-shadow: 0 20px 30px rgba(41, 128, 185, 0.15);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+  .card:hover {
+    transform: translateY(-14px);
+    box-shadow: 0 28px 40px rgba(41, 128, 185, 0.25);
+  }
+  .card img {
+    height: 180px;
+    object-fit: cover;
+  }
+  .card-content {
+    padding: 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .card-content h3 {
+    margin: 0 0 1rem;
+    color: #2980b9;
+    font-family: 'Playfair Display', serif;
+  }
+  .card-content p {
+    flex-grow: 1;
+    color: #545454;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-content a.btn {
+    align-self: flex-start;
+    background-color: #2980b9;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(41, 128, 185, 0.4);
+    transition: background-color 0.3s ease;
+  }
+  .card-content a.btn:hover,
+  .card-content a.btn:focus {
+    background-color: #1c598a;
+  }
+
+  /* Python Section */
+  #python {
+    background: linear-gradient(135deg, #f0f4f8 0%, #d5e3f1 100%);
+    border-radius: 25px;
+    padding: 3rem 2rem 4rem;
+    box-shadow: 0 20px 30px rgba(41, 128, 185, 0.1);
+  }
+  #python .content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  #python .section-group {
+    margin-bottom: 3rem;
+  }
+  #python h3 {
+    color: #1c3d72;
+    margin-bottom: 0.7rem;
+  }
+  #python p {
+    color: #23395d;
+    font-size: 1rem;
+  }
+  #python pre {
+    background: #1e293b;
+    color: #d1d5db;
+    padding: 1.8rem 2rem;
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace, monospace;
+    box-shadow: 0 10px 40px rgba(41, 128, 185, 0.2);
+    overflow-x: auto;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+  }
+
+  /* Tim Kami Section */
+  #timkami {
+    max-width: 1000px;
+    margin: 0 auto 0;
+  }
+  #timkami .team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .member {
+    background: #fff;
+    border-radius: 25px;
+    box-shadow: 0 15px 30px rgba(41, 128, 185, 0.15);
+    padding: 1.6rem 1.4rem 2rem;
+    width: 160px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+  .member:hover {
+    transform: translateY(-14px);
+    box-shadow: 0 25px 45px rgba(41,128,185,0.3);
+  }
+  .member img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid #2980b9;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 2px 2px rgba(41, 128, 185, 0.2));
+  }
+  .member p {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1c3d72;
+    margin: 0;
+  }
+
+  /* Video Section */
+  #video {
+    max-width: 900px;
+    margin: 0 auto 5rem;
+    text-align: center;
+  }
+  #video h2 {
+    margin-bottom: 1.8rem;
+    color: #2980b9;
+    font-family: 'Playfair Display', serif;
+  }
+  #video .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(41, 128, 185, 0.3);
+  }
+  #video iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
+  }
+
+  /* Maps Kampus Section */
+  #mapskampus {
+    max-width: 1000px;
+    margin: 0 auto 6rem;
+    text-align: center;
+  }
+  #mapskampus h2 {
+    color: #2980b9;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1.8rem;
+  }
+  #mapskampus .map-container {
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 14px 50px rgba(41,128,185,0.25);
+    height: 480px;
+  }
+  #mapskampus iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Footer */
+  footer {
+    background: #ecf0f1;
+    text-align: center;
+    padding: 3rem 1rem;
+    font-weight: 600;
+    color: #214269;
+    user-select: none;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.9);
+  }
+
+  /* Responsive */
+  @media (max-width: 920px) {
+    #python .content-wrapper {
+      margin: 0 1rem;
+    }
+    .card-content a.btn {
+      font-size: 0.95rem;
+    }
+    ul.nav-links {
+      gap: 1.3rem;
+      flex-wrap: wrap;
+    }
+  }
+  @media (max-width: 480px) {
+    nav {
+      padding: 1rem;
+    }
+    .logo {
+      font-size: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    #artikel .grid {
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+    }
+    #timkami .team-grid {
+      justify-content: center;
+      gap: 2rem;
+    }
+  }
+  /* Scrollbar styling for code block */
+  #python pre::-webkit-scrollbar {
+    height: 8px;
+  }
+  #python pre::-webkit-scrollbar-thumb {
+    background-color: #2980b9;
+    border-radius: 10px;
+  }
+</style>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display&family=Fira+Code&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+
+<header>
+  <nav aria-label="Navigasi utama">
+    <div class="logo" tabindex="0" aria-label="Logo EduLearn Blog">Blog</div>
+    <ul class="nav-links" role="tablist">
+      <li><a href="#artikel" id="tab-artikel" tabindex="0" role="tab" aria-controls="artikel" aria-selected="true" class="active">Artikel</a></li>
+      <li><a href="#python" id="tab-python" tabindex="-1" role="tab" aria-controls="python" aria-selected="false">Python</a></li>
+      <li><a href="#timkami" id="tab-timkami" tabindex="-1" role="tab" aria-controls="timkami" aria-selected="false">Tim</a></li>
+      <li><a href="#video" id="tab-video" tabindex="-1" role="tab" aria-controls="video" aria-selected="false">Video</a></li>
+      <li><a href="#mapskampus" id="tab-mapskampus" tabindex="-1" role="tab" aria-controls="mapskampus" aria-selected="false">Maps </a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="container" role="main" tabindex="0">
+
+  <!-- Artikel -->
+  <section id="artikel" class="content-section active" role="tabpanel" tabindex="0" aria-labelledby="tab-artikel">
+    <h2>Artikel Pendidikan Teknik Informatika </h2>
+    <div class="grid" role="list">
+
+      <article class="card" role="listitem" tabindex="0" aria-label="Artikel mengenai pembelajaran aktif">
+        <img src="gbr1.jpg" alt="Siswa belajar aktif" loading="lazy" />
+        <div class="card-content">
+        <h3>Strategi Pembelajaran Aktif untuk Mahasiswa Teknik Informatika</h3>
+          <p>PPembelajaran aktif dalam program studi Teknik Informatika mendorong mahasiswa untuk berinteraksi langsung dengan materi melalui diskusi kelompok, studi kasus perangkat lunak, dan simulasi sistem. Misalnya, mahasiswa diajak memecahkan masalah algoritma secara kolaboratif atau merancang solusi perangkat lunak berbasis kebutuhan nyata. Metode ini tidak hanya meningkatkan konsentrasi, tetapi juga memperkuat pemahaman konsep karena mahasiswa memproses informasi secara kritis dan reflektif. Dalam lingkungan teknis yang dinamis seperti informatika, strategi ini sangat efektif untuk membangun kemampuan analitis dan berpikir logis yang diperlukan di dunia industri maupun riset teknologi..</p>
+          <a href="#" class="btn" aria-label="Baca artikel lengkap strategi pembelajaran aktif">Baca Lengkap</a>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" tabindex="0" aria-label="Artikel teknik mencatat">
+        <img src="gbr2.jpg" alt="Teknik mencatat yang efektif" loading="lazy" />
+        <div class="card-content">
+          <h3>Teknik Mencatat Efektif untuk Meningkatkan Pemahaman Konsep Informatika</h3>
+          <p>Dalam studi Teknik Informatika, mencatat dengan metode terstruktur seperti Cornell Notes, flowchart, atau mind map sangat bermanfaat untuk memahami konsep-konsep kompleks seperti struktur data, jaringan komputer, atau pemrograman berorientasi objek. Teknik mencatat yang tepat memungkinkan mahasiswa mengorganisir informasi secara sistematis, menghubungkan antar topik, dan membangun pemahaman mendalam. Selain itu, mencatat selama praktik lab atau coding session membantu mahasiswa dalam meninjau kembali proses debugging atau perancangan algoritma. Hal ini memperkuat daya ingat jangka panjang dan memudahkan proses belajar mandiri saat menghadapi proyek besar atau tugas akhir.</p>
+          <a href="#" class="btn" aria-label="Baca artikel teknik mencatat efektif">Baca Lengkap</a>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" tabindex="0" aria-label="Artikel teknologi dalam pendidikan">
+        <img src="gbr3.jpg" alt="Teknologi di pendidikan" loading="lazy" />
+        <div class="card-content">
+          <h3>Inovasi Teknologi dalam Proses Belajar Mahasiswa Informatika</h3>
+          <p>PTeknologi digital memainkan peran penting dalam meningkatkan kualitas pembelajaran Teknik Informatika di era modern. Platform daring seperti GitHub Classroom, e-learning, dan tools kolaboratif seperti Google Colab memungkinkan mahasiswa untuk mengakses materi kapan saja dan bekerja sama secara real-time dalam proyek pemrograman. Video tutorial, kuis interaktif, serta simulasi berbasis web menjadikan proses belajar lebih personal dan adaptif terhadap gaya belajar masing-masing mahasiswa. Bahkan, teknologi seperti virtual machine dan container (Docker) kini umum digunakan dalam praktikum, memberikan pengalaman langsung terhadap teknologi industri. Inovasi ini memperkaya proses belajar dan mempersiapkan mahasiswa menghadapi tantangan teknologi informasi global.</p>
+          <a href="#" class="btn" aria-label="Baca artikel inovasi teknologi pendidikan">Baca Lengkap</a>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" tabindex="0" aria-label="Artikel teknologi dalam pendidikan">
+        <img src="gbr4.jpg" alt="Teknologi di pendidikan" loading="lazy" />
+        <div class="card-content">
+          <h3>Penerapan Proyek Berbasis Praktik untuk Meningkatkan Kompetensi Mahasiswa Informatika</h3>
+          <p>Pendekatan pembelajaran berbasis proyek (Project-Based Learning) sangat relevan bagi mahasiswa Teknik Informatika. Dalam metode ini, mahasiswa tidak hanya mempelajari teori semata, tetapi juga ditantang untuk mengimplementasikan pengetahuan mereka ke dalam proyek nyata, seperti membangun aplikasi mobile, merancang sistem jaringan, atau menciptakan prototipe IoT. Melalui proses ini, mereka belajar mengelola waktu, bekerja dalam tim, serta menghadapi permasalahan teknis yang autentik. Selain meningkatkan skill teknis, proyek berbasis praktik juga membantu mahasiswa memahami siklus pengembangan perangkat lunak secara menyeluruh, mulai dari perencanaan, pengkodean, hingga pengujian. Ini memberikan fondasi kuat yang sangat dibutuhkan di dunia kerja dan industri teknologi.</p>
+          <a href="#" class="btn" aria-label="Baca artikel inovasi teknologi pendidikan">Baca Lengkap</a>
+        </div>
+      </article>
+
+
+<article class="card" role="listitem" tabindex="0" aria-label="Artikel teknologi dalam pendidikan">
+        <img src="gbr5.jpg" alt="Teknologi di pendidikan" loading="lazy" />
+        <div class="card-content">
+          <h3>Pemanfaatan Artificial Intelligence dalam Pembelajaran Teknik Informatika</h3>
+          <p>Kehadiran teknologi Artificial Intelligence (AI) membuka babak baru dalam dunia pendidikan, termasuk dalam perkuliahan Teknik Informatika. Dengan adanya sistem rekomendasi materi belajar berbasis machine learning, dosen dan mahasiswa kini dapat menyesuaikan pembelajaran berdasarkan kebutuhan individu. Chatbot cerdas juga dapat digunakan sebagai asisten belajar mandiri untuk menjawab pertanyaan teknis atau menjelaskan kode pemrograman. Selain itu, mahasiswa dapat mempelajari cara kerja AI secara langsung melalui implementasi proyek seperti image recognition, natural language processing, hingga autonomous system. Ini tidak hanya menambah pengetahuan praktis, tetapi juga membekali mereka dengan keterampilan masa depan yang relevan di era revolusi industri 4.0.</p>
+          <a href="#" class="btn" aria-label="Baca artikel inovasi teknologi pendidikan">Baca Lengkap</a>
+        </div>
+      </article>
+
+    <article class="card" role="listitem" tabindex="0" aria-label="Artikel teknologi dalam pendidikan">
+        <img src="gbr6.jpg" alt="Teknologi di pendidikan" loading="lazy" />
+        <div class="card-content">
+          <h3>Pentingnya Pemahaman Dasar Algoritma dan Struktur Data dalam Karier Informatika</h3>
+          <p>Dalam dunia Teknik Informatika, pemahaman terhadap algoritma dan struktur data bukan sekadar syarat akademik, melainkan fondasi utama dalam pengembangan perangkat lunak yang efisien dan andal. Konsep seperti rekursi, sorting, tree, graph, dan hash table sangat penting karena menjadi tulang punggung dalam pemecahan masalah komputasi nyata. Mahasiswa yang menguasai algoritma dapat merancang solusi yang optimal, hemat sumber daya, dan skalabel untuk sistem berskala besar seperti aplikasi e-commerce, layanan cloud, bahkan teknologi kecerdasan buatan.
+Penguasaan materi ini juga sangat menentukan saat mengikuti kompetisi pemrograman, coding interview di perusahaan teknologi besar, atau ketika mengembangkan aplikasi dengan performa tinggi.</p>
+          <a href="#" class="btn" aria-label="Baca artikel inovasi teknologi pendidikan">Baca Lengkap</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Python -->
+  <section id="python" class="content-section" role="tabpanel" tabindex="0" aria-labelledby="tab-python">
+    <h2>Pengenalan Lengkap Python </h2>
+    <div class="content-wrapper">
+
+      <div class="section-group" tabindex="0">
+        <h3>1. Apa itu Python?</h3>
+        <p>Python adalah bahasa pemrograman tingkat tinggi, interpretatif, dan general-purpose (serba guna) yang pertama kali dikembangkan oleh Guido van Rossum dan dirilis tahun 1991.Python merupakan bahasa pemrograman serba guna dengan sintaks yang mudah dibaca dan dipelajari. Python banyak digunakan untuk pengembangan web, data science, machine learning, automasi, dan banyak lagi.</p>
+      </div>
+
+      <div class="section-group" tabindex="0">
+        <h3>2. Instalasi dan Persiapan</h3>
+        <p>Untuk memulai, silakan install Python dari situs resmi <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>. Setelah itu, anda bisa menjalankan kode Python via interpreter atau menggunakan IDE seperti VS Code atau PyCharm.</p>
+      </div>
+
+      <div class="section-group" tabindex="0">
+        <h3>3. Contoh Program Sederhana</h3>
+        <pre><code># Menampilkan pesan ke layar
+print("Hello, World!")
+
+# Input dan Output sederhana
+nama = input("Masukkan nama Anda: ")
+print(f"Halo, {nama}! Selamat belajar Python.")</code></pre>
+      </div>
+
+      <div class="section-group" tabindex="0">
+        <h3>4. Struktur Dasar Bahasa Python</h3>
+        <p>Python memiliki struktur yang sederhana dan tidak menggunakan tanda kurung kurawal ({}) untuk blok kode, melainkan menggunakan indentasi (spasi/tab). Contoh penggunaan if-else:</p>
+        <pre><code>nilai = 85
+
+if nilai &gt;= 80:
+    print("Lulus dengan nilai bagus!")
+else:
+    print("Perlu belajar lebih giat lagi.")</code></pre>
+      </div>
+
+      <div class="section-group" tabindex="0">
+        <h3>5. Penggunaan Fungsi</h3>
+        <p>Fungsi membantu memperjelas kode dan menghindari pengulangan. Contoh fungsi sederhana:</p>
+        <pre><code>def sapa(nama):
+    print(f"Halo, {nama}!")
+
+sapa("Andi")  # Memanggil fungsi</code></pre>
+      </div>
+
+      <div class="section-group" tabindex="0">
+        <h4>6. Contoh Program pyhton kalkulator</h4>
+        
+        <pre><code>def tambah(x, y):
+    return x + y
+
+def kurang(x, y):
+    return x - y
+
+def kali(x, y):
+    return x * y
+
+def bagi(x, y):
+    if y == 0:
+        return "Tidak bisa dibagi dengan nol!"
+    return x / y
+
+def kalkulator():
+    print("=== Program Kalkulator Sederhana ===")
+    print("Operasi:")
+    print("1. Tambah (+)")
+    print("2. Kurang (-)")
+    print("3. Kali (*)")
+    print("4. Bagi (/)")
+    
+    pilihan = input("Pilih operasi (1/2/3/4): ")
+    
+    if pilihan not in ['1', '2', '3', '4']:
+        print("Pilihan tidak valid!")
+        return
+
+    try:
+        angka1 = float(input("Masukkan angka pertama: "))
+        angka2 = float(input("Masukkan angka kedua: "))
+    except ValueError:
+        print("Input harus berupa angka!")
+        return
+
+    if pilihan == '1':
+        print(f"Hasil: {angka1} + {angka2} = {tambah(angka1, angka2)}")
+    elif pilihan == '2':
+        print(f"Hasil: {angka1} - {angka2} = {kurang(angka1, angka2)}")
+    elif pilihan == '3':
+        print(f"Hasil: {angka1} * {angka2} = {kali(angka1, angka2)}")
+    elif pilihan == '4':
+        print(f"Hasil: {angka1} / {angka2} = {bagi(angka1, angka2)}")
+
+# Menjalankan program
+kalkulator()</code></pre>
+      </div>
+
+    </div>
+  </section>
+   <!-- Tutorial Python -->
+<section id="video" class="content-section" role="tabpanel" tabindex="0" aria-labelledby="tab-video">
+  <h2>Perkenalan</h2>
+  <div class="video-wrapper" role="region" aria-label="Video presentasi proyek">
+    <video 
+      controls 
+      width="640" 
+      height="360" 
+      title="Video Project">
+      <source src="perkenalan.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+  <!-- Tim Kami -->
+  <section id="timkami" class="content-section" role="tabpanel" tabindex="0" aria-labelledby="tab-timkami">
+    <h2>Tim </h2>
+    <div class="team-grid" role="list">
+
+      <div class="member" role="listitem" tabindex="0" aria-label="Foto dan nama Member Andi">
+        <img src="dita.jpg" alt="Andi" loading="lazy" />
+        <p>Ayudiya Erdita Ramadhani</p>
+      </div>
+
+      <div class="member" role="listitem" tabindex="0" aria-label="Foto dan nama Member Sari">
+        <img src="anggi.jpg" alt="Sari" loading="lazy" />
+        <p>Anggi Alpina Damayanti</p>
+      </div>
+
+      <div class="member" role="listitem" tabindex="0" aria-label="Foto dan nama Member Budi">
+        <img src="datul.jpg" alt="Budi" loading="lazy" />
+        <p>Raudhatul Adhawiyah</p>
+      </div>
+
+      <div class="member" role="listitem" tabindex="0" aria-label="Foto dan nama Member Rina">
+        <img src="mira.jpg" alt="Rina" loading="lazy" />
+        <p>Mira Adhiesty Nasution</p>
+      </div>
+
+      <div class="member" role="listitem" tabindex="0" aria-label="Foto dan nama Member Agus">
+        <img src="sandra.jpg" alt="Agus" loading="lazy" />
+        <p>Sandra Pratiwi</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video -->
+<section id="video" class="content-section" role="tabpanel" tabindex="0" aria-labelledby="tab-video">
+  <h2>Tutorial Python </h2>
+  <div class="video-wrapper" role="region" aria-label="Tutorial Python">
+    <video 
+      controls 
+      width="640" 
+      height="360" 
+      title="Video Project">
+      <source src="python dan kalkulator.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+  <!-- Maps Kampus -->
+  <section id="mapskampus" class="content-section" role="tabpanel" tabindex="0" aria-labelledby="tab-mapskampus">
+    <h1>Maps STMIK Pelita Nusantara</h1>
+    <div id="map">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15966.288250385625!2d98.6579629!3d3.5721839!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30313029cea1eebb%3A0x2b345f687b341739!2sSTMIK%20PENUSA!5e0!3m2!1sid!2sid!4v1617899940000!5m2!1sid!2sid"
+            width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+</main>
+
+<footer role="contentinfo">
+  <p> Blog – Tugas Project Dibuat dengan ❤️ oleh Tim Kami</p>
+</footer>
+
+<script>
+  // Tab functionality for nav links controlling visible sections
+  const tabs = document.querySelectorAll('ul.nav-links a');
+  const sections = document.querySelectorAll('section.content-section');
+
+  function activateTab(tab) {
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+      t.tabIndex = -1;
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    tab.tabIndex = 0;
+
+    const targetId = tab.getAttribute('href').substring(1);
+    sections.forEach(sec => {
+      if (sec.id === targetId) {
+        sec.classList.add('active');
+        sec.focus();
+      } else {
+        sec.classList.remove('active');
+      }
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      activateTab(e.currentTarget);
+      // Update URL hash without default scroll jump
+      history.replaceState(null, null, e.currentTarget.getAttribute('href'));
+    });
+    tab.addEventListener('keydown', e => {
+      // Keyboard Left/Right arrow navigation for tabs
+      let index = Array.prototype.indexOf.call(tabs, e.currentTarget);
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        let nextIndex = (index + 1) % tabs.length;
+        tabs[nextIndex].focus();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        let prevIndex = (index - 1 + tabs.length) % tabs.length;
+        tabs[prevIndex].focus();
+      }
+    });
+  });
+</script>
+</body>
+</html>
